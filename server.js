@@ -17,6 +17,7 @@ app.use("/app/controllers", express.static(path.join(process.cwd(), "/app/contro
 
 // setting up routes
 require("./app/routes/index.js")(app);
+require("./app/routes/api.js")(app);
 
 // init WebSocket
 // need to pass the Server to socket.io, and not the express application
