@@ -29,4 +29,4 @@ require("./app/config/socket.config.js")(io);
 // this allows socketio to attach itself
 server.listen(process.env.PORT || 8080, function() {
     console.log("Listening on " + process.env.PORT || 8080);
-})
+});

@@ -1,5 +1,5 @@
 /*
-* define a few function to work with WebSocket
+* define a few functions to work with WebSocket
 */
 
 var SocketController = {};

@@ -1,0 +1,11 @@
+body {
+    padding-top: 5vh;
+}
+#legend-area {
+    height: 20vh;
+    background-color: #E8EAF6;
+}
+#chart-area {
+    height: 70vh;
+    background-color: #E1BEE7;
+}

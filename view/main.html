@@ -11,7 +11,18 @@
         <link rel="stylesheet" href="/public/css/main.css">
     </head>
     <body>
+        <div class="container">
+            <div class="row">
+                <div id="chart-area" class="col-10 mx-auto">
 
+                </div>
+            </div>
+            <div class="row">
+                <div id="legend-area" class="col-10 mx-auto">
+
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="/public/js/jquery-3.2.1.min.js"></script>
@@ -21,6 +32,7 @@
         <script src="/public/js/socket.io.js"></script>
         <!-- mine & highstock -->
         <script src="/public/js/highstock.js"></script>
+        <script src="/app/controllers/client.highstock-controller.js"></script>
         <script src="/app/controllers/client.socket-controller.js"></script>
         <script src="/public/js/main.js"></script>
     </body>
