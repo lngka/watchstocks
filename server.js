@@ -13,6 +13,7 @@ require("dotenv").load();
 // public folders
 app.use("/public", express.static(path.join(process.cwd(), "public")));
 app.use("/app/controllers", express.static(path.join(process.cwd(), "/app/controllers")));
+app.use("/app/common", express.static(path.join(process.cwd(), "/app/common")));
 
 
 // setting up routes
