@@ -8,12 +8,13 @@ $(function() {
         console.log(data);
     });
 
-    // StockDataController.getBySymbol("MSFT", function(err, data){
-    //     console.log(data);
-    // });
-
-    // drawing chart
-    var canvas = document.querySelector("#chart-area").id;
-    //eslint-disable-next-line no-undef
-    HighstockController.draw(canvas);
+    StockDataController.getBySymbol("MSFT", function(err, data){
+        if (err) {
+            return alert(err.message);
+        }
+        // drawing chart
+        var canvas = document.querySelector("#chart-area").id;
+        //eslint-disable-next-line no-undef
+        HighstockController.draw(canvas, data);
+    });
 });
