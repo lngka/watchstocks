@@ -39,10 +39,10 @@ StockDataController.processData = function(rawData, callback) {
         var date = new Date(key);
         var dataPoint = {
             "x": date.getTime(),
-            "open": timeSeries[key]["1. open"],
-            "high": timeSeries[key]["2. high"],
-            "low": timeSeries[key]["3. low"],
-            "close": timeSeries[key]["4. close"]
+            "open" : Number(timeSeries[key]["1. open"]),
+            "high" : Number(timeSeries[key]["2. high"]),
+            "low"  : Number(timeSeries[key]["3. low"]),
+            "close": Number(timeSeries[key]["4. close"])
         };
         // add to array in reverse to sort by ascending time
         result.unshift(dataPoint);
