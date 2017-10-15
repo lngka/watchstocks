@@ -6,7 +6,6 @@ const ServerControllers = require(path.join(process.cwd(), "app/controllers", "s
 module.exports = function(app) {
     app.get("/api/query", function(req, res) {
         var symbol = req.query.symbol;
-        console.log(symbol);
         ServerControllers.getStockData(symbol, function(err, data) {
             if (err) {
                 return res.status(500).send(err.message);

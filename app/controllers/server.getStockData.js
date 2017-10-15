@@ -12,7 +12,7 @@ module.exports = function getStockData(symbol, callback) {
         "host": "www.alphavantage.co",// https://www.alphavantage.co/documentation/#daily
         "path": "/query?"
             + "function=" + "TIME_SERIES_DAILY"
-            + "&outputsize=" + "compact"
+            + "&outputsize=" + "compact" //full(20 years) or compact(100 days)
             + "&symbol="   + encodeURIComponent(symbol)
             + "&apikey="   + process.env.ALPHA_VANTAGE_KEY
     };
