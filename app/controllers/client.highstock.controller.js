@@ -6,7 +6,7 @@ var HighstockController = {};
 /*
 * @param {string} id : id of the div to draw the chart on, without "#"
 * @param {array} data : array of objects with keys: x, open, high, low, close
-http://api.highcharts.com/highstock/series.candlestick.data
+  http://api.highcharts.com/highstock/series.candlestick.data
 */
 HighstockController.draw = function(id, data) {
     console.log("HighstockController", data);
