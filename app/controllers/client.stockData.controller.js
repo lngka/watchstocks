@@ -7,6 +7,9 @@ var StockDataController = {};
 
 /*
 * function to ask server for data
+* @param {string} symbol of the stock to search
+* @param {function} callback function
+* @return {object}
 */
 StockDataController.getBySymbol = function(symbol, callback) {
     var url = window.location.origin + "/api/query?symbol=" + encodeURIComponent(symbol);
@@ -16,7 +19,13 @@ StockDataController.getBySymbol = function(symbol, callback) {
             if (err) {
                 return callback(err, null);
             }
-            return callback(null, data);
+
+            // attach the symbol before returning
+            var processed = {
+                "symbol": symbol,
+                "data": data
+            };
+            return callback(null, processed);
         });
     });
 };
@@ -42,8 +51,16 @@ StockDataController.processData = function(rawData, callback) {
             "open" : Number(timeSeries[key]["1. open"]),
             "high" : Number(timeSeries[key]["2. high"]),
             "low"  : Number(timeSeries[key]["3. low"]),
-            "close": Number(timeSeries[key]["4. close"])
+            "close": Number(timeSeries[key]["4. close"]),
         };
+
+        // add an "y" value for dataPoint, used to draw line charts
+        dataPoint.y = (dataPoint.open + dataPoint.close) / 2;
+
+        // round to 2 decimal places with 1E2 means 100, 1E3 means 1000
+        // change to 1E3 if we need 3 decimal places
+        dataPoint.y = Math.round(dataPoint.y * 1E2) / 1E2;
+
         // add to array in reverse to sort by ascending time
         result.unshift(dataPoint);
     }

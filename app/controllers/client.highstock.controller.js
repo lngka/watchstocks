@@ -5,16 +5,16 @@ var HighstockController = {};
 
 /*
 * @param {string} id : id of the div to draw the chart on, without "#"
-* @param {array} data : array of objects with keys: x, open, high, low, close
-  http://api.highcharts.com/highstock/series.candlestick.data
+* @param {object} input : {"symbol": symbol, "data": [{}]}
+                          input.data is an array of objects with keys: x, open, high, low, close, y
 */
-HighstockController.draw = function(id, data) {
-    console.log("HighstockController", data);
+HighstockController.draw = function(id, input) {
+    console.log("HighstockController", input);
     // chart is auto-rendered by object declaration
     // eslint-disable-next-line
     var myChart = Highcharts.stockChart({
         "chart": {
-            "type": "candlestick", // line or candlestick
+            "type": "line", // line or candlestick
             "renderTo": id
         },
         "title": {
@@ -25,9 +25,8 @@ HighstockController.draw = function(id, data) {
         },
         "series": [
             {
-                "name" : "MSFT",
-                "type": "candlestick",
-                "data": data
+                "name" : input.symbol,
+                "data": input.data
             }
         ]
     });

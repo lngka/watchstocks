@@ -14,6 +14,7 @@ $(function() {
             }
             // drawing chart
             var canvas = document.querySelector("#chart-area").id;
+            
             //eslint-disable-next-line no-undef
             HighstockController.draw(canvas, data);
         });
