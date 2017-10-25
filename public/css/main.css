@@ -1,7 +1,19 @@
 body {
     padding-top: 5vh;
 }
-#legend-area {
-    height: 20vh;
+#symbol-control-area {
     background-color: #E8EAF6;
+}
+
+#chart-area {
+    min-height: 70vh;
+}
+#symbol-input {
+    width: 99%;
+    max-width:100%;
+    border: solid #17a2b8 1px;
+}
+#add-symbol-btn {
+    width: 99%;
+    display: inline-block;
 }

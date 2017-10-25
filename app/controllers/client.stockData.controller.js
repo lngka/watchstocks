@@ -15,12 +15,10 @@ StockDataController.getBySymbol = function(symbol, callback) {
     var url = window.location.origin + "/api/query?symbol=" + encodeURIComponent(symbol);
     // ajaxRequest(method, url, requestObj, callback)
     ajaxRequest("GET", url, {}, function(response) {
-
         StockDataController.processData(response, function(err, data) {
             if (err) {
                 return callback(err, null);
             }
-
             return callback(null, data);
         });
     });
