@@ -21,12 +21,7 @@ StockDataController.getBySymbol = function(symbol, callback) {
                 return callback(err, null);
             }
 
-            // attach the symbol before returning
-            var processed = {
-                "symbol": symbol,
-                "data": data
-            };
-            return callback(null, processed);
+            return callback(null, data);
         });
     });
 };
@@ -38,7 +33,7 @@ StockDataController.processData = function(rawData, callback) {
     try {
         rawData = JSON.parse(rawData);
     } catch (e) {
-        var formatErr = new Error("[StockDataController] Wrong data format from server");
+        var formatErr = new Error("StockDataController: Wrong data format from server");
         return callback(formatErr, null);
     }
 
@@ -65,5 +60,11 @@ StockDataController.processData = function(rawData, callback) {
         // add to array in reverse to sort by ascending time
         result.unshift(dataPoint);
     }
-    return callback(null, result);
+
+    // processed data must be in this format
+    var processed = {
+        "symbol": rawData["Meta Data"]["2. Symbol"],
+        "data": result
+    };
+    return callback(null, processed);
 };

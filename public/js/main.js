@@ -7,7 +7,7 @@ $(function() {
     // init socketio connection //client.socket.controller.js
     const socket = SocketController.getSocket(window.location.origin);
 
-    // server send the current displayed symbols at connect
+    // server send the current symbols to display at connect
     socket.on("symbols", function(data) {
         var symbols = data.symbols;
 
