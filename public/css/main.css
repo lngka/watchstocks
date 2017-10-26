@@ -1,6 +1,7 @@
 body {
     padding-top: 5vh;
 }
+
 #symbol-control-area {
     background-color: #E8EAF6;
 }
@@ -8,12 +9,28 @@ body {
 #chart-area {
     min-height: 70vh;
 }
+
 #symbol-input {
     width: 99%;
     max-width:100%;
     border: solid #17a2b8 1px;
 }
+
 #add-symbol-btn {
     width: 99%;
     display: inline-block;
+}
+
+.legend-item {
+    background-color: white;
+    width: 98%;
+    margin-left: 1%;
+    border-left: thick outset #D5D8DC;
+
+}
+
+.delete-btn:focus {
+    outline-style: inset;
+    outline-width: 0.1em;
+    outline-color: #D5D8DC;
 }

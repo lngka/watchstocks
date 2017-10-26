@@ -6,7 +6,7 @@ var HighstockController = {};
 
 /*
 * init the chart and store its preference object in HighstockController
-* @param {string} id : id of the div to draw the chart on, without "#"
+* @param {string} id of the div to draw the chart on, without "#"
 */
 HighstockController.init = function(id) {
     // chart is auto-rendered by object declaration
@@ -53,7 +53,7 @@ HighstockController.addToSeries = function(input) {
     //https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
     HighstockController.myChart.addSeries(seri, true, true);
 };
-/* 
+/*
 * @param {string} id : id of the div to draw the chart on, without "#"
 * @param {object} input : {"symbol": symbol, "data": [{}]}
                           input.data is an array of objects with keys: x, open, high, low, close, y

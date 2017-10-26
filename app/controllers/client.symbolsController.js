@@ -8,7 +8,7 @@ $(document).ready(function() {
 
         // sanity check
         var symbol = symbolInput.value;
-        if (!symbol) return alert("You didn't type anything in");
+        if (!symbol) return alert("But you didn't type anything");
         if (symbol.length < 3)
             return alert("Symbols must be longer as 2 character");
 
@@ -17,7 +17,12 @@ $(document).ready(function() {
             if (err) {
                 return alert(err.message);
             }
+            // else
             HighstockController.addToSeries(data);
+
+            // TODO:make a legend-item
+
+            // TODO:inform server about new symbol
         });
     });
 });

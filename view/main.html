@@ -13,18 +13,23 @@
     <body>
         <div class="container">
             <div class="row">
-                <div id="symbol-control-area" class="col-2 mx-auto">
+                <div id="symbol-control-area" class="col-1 mx-auto">
                     <div id="symbol-control" class="row">
                         <form class="form-inline">
                           <input type="text" class="form-control-plaintext" id="symbol-input" required>
-                          <button type="submit" id="add-symbol-btn" class="btn btn-info">Add Symbol</button>
+                          <button type="submit" id="add-symbol-btn" class="btn btn-info">Add</button>
                         </form>
                     </div>
-                    <div id="symbol-display" class="row">
-
+                    <hr>
+                    <div id="legends" class="row">
+                        <div class="legend-item">SAMPLE
+                            <button type="button" class="close delete-btn" name="MSFT">
+                              <span>&times;</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="chart-area" class="col-10 mx-auto"></div>
+                <div id="chart-area" class="col-11 mx-auto"></div>
             </div>
         </div>
 
