@@ -32,15 +32,19 @@ HighstockController.init = function(id) {
 * @param {object} input : {"symbol": symbol, "data": [{}]}
 *      input.data is an array of objects with keys: x, open, high, low, close, y
 *      x is a timestamp
+* @param {function} callback with;
+*   @callback-arg {Error} err if something is wrong
 */
-HighstockController.addToSeries = function(input) {
+HighstockController.addToSeries = function(input, callback) {
     // sanity check
     if (!HighstockController.myChart) {
-        return alert("Couldn't addSeries if chart not initialized");
+        var err = new Error("Couldn't addSeries if chart not initialized");
+        return callback(err);
     }
 
     if (!input.symbol || !input.data) {
-        return alert("Couldn't addSeries if wrong data input");
+        var err2 = new Error("Couldn't add series if wrong data input");
+        return callback(err2);
     }
 
     // build new serie
@@ -52,7 +56,25 @@ HighstockController.addToSeries = function(input) {
 
     //https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
     HighstockController.myChart.addSeries(seri, true, true);
+
+    return callback(null);
 };
+/*
+* get symbol color from chart and render a legend-item under #legends
+* @param {string} symbol of the stock being added
+* @param {function} callback with;
+*   @callback-arg {Error} err if something is wrong
+*/
+HighstockController.addLegendItem = function(symbol, callback) {
+    // sanity check
+    if (!symbol) {
+        var err = new Error("Could not add legend-item: Missing symbol");
+        return callback(err);
+    } else {
+        var sample = document.querySelector("#sample-legend-item");
+    }
+};
+
 /*
 * @param {string} id : id of the div to draw the chart on, without "#"
 * @param {object} input : {"symbol": symbol, "data": [{}]}
