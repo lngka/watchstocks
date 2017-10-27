@@ -7,7 +7,7 @@ $(function() {
     // init socketio connection //client.socket.controller.js
     const socket = SocketController.getSocket(window.location.origin);
 
-    // server send the current symbols to display at connect
+    // server sends the current symbols to display at connect
     socket.on("symbols", function(data) {
         var symbols = data.symbols;
 
@@ -16,6 +16,9 @@ $(function() {
                 if (err) return alert(err.message);
                 HighstockController.addToSeries(data, function(err) {
                     if (err) return alert(err.message);
+                    HighstockController.addLegendItem(symbol, function(err) {
+                        if (err) return alert(err.message);
+                    });
                 });
             });
         });

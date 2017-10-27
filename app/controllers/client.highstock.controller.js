@@ -9,6 +9,10 @@ var HighstockController = {};
 * @param {string} id of the div to draw the chart on, without "#"
 */
 HighstockController.init = function(id) {
+    HighstockController.myColors = ["#2f7ed8", "#0d233a", "#8bbc21", "#910000",
+        "#1aadce", "#492970", "#f28f43",
+        "#77a1e5", "#c42525", "#a6c96a"];
+
     // chart is auto-rendered by object declaration
     // eslint-disable-next-line
     var myChart = Highcharts.stockChart({
@@ -22,6 +26,7 @@ HighstockController.init = function(id) {
         "subtitle": {
             "text": "Invest only what you can lose"
         },
+        "colors": HighstockController.myColors,
         "series": []
     });
 
@@ -36,10 +41,10 @@ HighstockController.init = function(id) {
 *   @callback-arg {Error} err if something is wrong
 */
 HighstockController.addToSeries = function(input, callback) {
-    // sanity check
+    // sanity checks
     if (!HighstockController.myChart) {
-        var err = new Error("Couldn't addSeries if chart not initialized");
-        return callback(err);
+        var err1 = new Error("Couldn't add series if chart not initialized");
+        return callback(err1);
     }
 
     if (!input.symbol || !input.data) {
@@ -47,16 +52,25 @@ HighstockController.addToSeries = function(input, callback) {
         return callback(err2);
     }
 
+    /* figure out which index the being-added series is,
+    *  by counting how many series already there
+    *  NOTE: Highcharts adds a series named "Navigator" by default
+    *  So the count must be reduced by 1 to get what we want
+    */
+    // btw, the index of each series determines its color
+    var whichseries = HighstockController.myChart.series.length;
+    var color = HighstockController.myColors[whichseries];
+
     // build new series
     var series = {
-        "id": input.symbol,
+        "id": input.symbol,// https://api.highcharts.com/class-reference/Highcharts.Chart#get
         "name": input.symbol,
-        "data": input.data
+        "data": input.data,
+        "color": color
     };
 
     //https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
     HighstockController.myChart.addSeries(series, true, true);
-
     return callback(null);
 };
 /*
@@ -76,17 +90,38 @@ HighstockController.addLegendItem = function(symbol, callback) {
         var newLegendItem = sample.cloneNode(true);
         var deleteBtn     = newLegendItem.querySelector(".delete-btn");
 
-        // this WILL delete the deleteBtn from newLegendItem
+
+        // side effect: deleteBtn removed from newLegendItem
         newLegendItem.innerText = symbol;
 
         // the attribute "name" determines which symbol is being removed
         deleteBtn.name = symbol;
 
-        // this WILL append the deleteBtn to newLegendItem after its innerText
+        // side effect: deleteBtn added back to newLegendItem
         HighstockController.initLegendDeleteButton(legends, newLegendItem, deleteBtn);
+
+        HighstockController.styleLegendItem(newLegendItem);
 
         legends.appendChild(newLegendItem);
     }
+};
+
+/*
+* find the color Highcharts assigned to this particular stock
+* then style the representing legend-item accordingly
+* @param {DOM Object} legend : the div represent a legend item
+*/
+HighstockController.styleLegendItem = function(legend){
+
+    /* figure out which index the being-added series is,
+    *  by counting how many series already there
+    *  NOTE: Highcharts adds a series named "Navigator" by default
+    *  So the count must be reduced by 1 to get what we want
+    */
+    // btw, the index of each series determines its color
+    var whichseries = HighstockController.myChart.series.length;
+    var color = HighstockController.myColors[whichseries];
+    legend.style["border-left"] = "thick outset " + color;
 };
 
 /*
@@ -98,12 +133,16 @@ HighstockController.addLegendItem = function(symbol, callback) {
 */
 HighstockController.initLegendDeleteButton = function(legends, legend, button) {
     var symbol = button.name;
+
     button.addEventListener("click", function(event) {
         event.preventDefault();
-        console.log(button.name);
-        legends.removeChild(legend);
+
         HighstockController.removeFromSeries(symbol, function(err) {
-            return alert("HighstockController " + err.message);
+            if(err) {
+                return alert("HighstockController " + err.message);
+            } else {
+                legends.removeChild(legend);
+            }
         });
     });
 
@@ -133,6 +172,7 @@ HighstockController.removeFromSeries = function(id, callback) {
         return callback(err2);
     } else {
         series.remove();
+        return callback(false);
     }
 };
 /*
