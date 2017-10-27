@@ -47,15 +47,15 @@ HighstockController.addToSeries = function(input, callback) {
         return callback(err2);
     }
 
-    // build new serie
-    var seri = {
+    // build new series
+    var series = {
         "id": input.symbol,
         "name": input.symbol,
         "data": input.data
     };
 
     //https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
-    HighstockController.myChart.addSeries(seri, true, true);
+    HighstockController.myChart.addSeries(series, true, true);
 
     return callback(null);
 };
@@ -71,10 +71,70 @@ HighstockController.addLegendItem = function(symbol, callback) {
         var err = new Error("Could not add legend-item: Missing symbol");
         return callback(err);
     } else {
-        var sample = document.querySelector("#sample-legend-item");
+        var legends       = document.querySelector("#legends");
+        var sample        = document.querySelector("#sample-legend-item");
+        var newLegendItem = sample.cloneNode(true);
+        var deleteBtn     = newLegendItem.querySelector(".delete-btn");
+
+        // this WILL delete the deleteBtn from newLegendItem
+        newLegendItem.innerText = symbol;
+
+        // the attribute "name" determines which symbol is being removed
+        deleteBtn.name = symbol;
+
+        // this WILL append the deleteBtn to newLegendItem after its innerText
+        HighstockController.initLegendDeleteButton(legends, newLegendItem, deleteBtn);
+
+        legends.appendChild(newLegendItem);
     }
 };
 
+/*
+* all .legend-item have a predefined delete-btn, here we bring
+* the button to life
+* @param {DOM Object} legends : the div contains all legend items
+* @param {DOM Object} legend : the div represent a legend item
+* @param {DOM Object} button: the button which should remove the legend on click
+*/
+HighstockController.initLegendDeleteButton = function(legends, legend, button) {
+    var symbol = button.name;
+    button.addEventListener("click", function(event) {
+        event.preventDefault();
+        console.log(button.name);
+        legends.removeChild(legend);
+        HighstockController.removeFromSeries(symbol, function(err) {
+            return alert("HighstockController " + err.message);
+        });
+    });
+
+    // because button was removed to add textual content to legend
+    // see HighstockController.addLegendItem
+    legend.appendChild(button);
+};
+
+/*
+* remove a series from the chart
+* @param {string} id of the series to be removed
+*   id is set in HighstockController.addToSeries
+*   id is the stock symbol
+* @param {function} callback
+*   @callback-arg {Error} err if something wrong happens
+*/
+HighstockController.removeFromSeries = function(id, callback) {
+    // sanity check
+    if (!id) {
+        var err1 = new Error("Could not remove series: Missing series' ID");
+        return callback(err1);
+    }
+
+    var series = HighstockController.myChart.get(id);
+    if (!series) {
+        var err2 = new Error("Could not remove series: Not found by given ID");
+        return callback(err2);
+    } else {
+        series.remove();
+    }
+};
 /*
 * @param {string} id : id of the div to draw the chart on, without "#"
 * @param {object} input : {"symbol": symbol, "data": [{}]}

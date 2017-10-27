@@ -13,10 +13,10 @@ $(function() {
 
         symbols.forEach(function(symbol) {
             StockDataController.getBySymbol(symbol, function(err, data){
-                if (err) {
-                    return alert(err.message);
-                }
-                HighstockController.addToSeries(data);
+                if (err) return alert(err.message);
+                HighstockController.addToSeries(data, function(err) {
+                    if (err) return alert(err.message);
+                });
             });
         });
     });

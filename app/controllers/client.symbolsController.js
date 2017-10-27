@@ -10,8 +10,8 @@ $(document).ready(function() {
         // sanity check
         var symbol = symbolInput.value;
         if (!symbol) return alert("But you didn't type anything");
-        if (symbol.length < 3) {
-            return alert("Symbols must be longer as 2 character");
+        if (symbol.length < 2) {
+            return alert("Symbols must be longer as 1 character");
         }
 
         //eslint-disable-next-line
