@@ -31,6 +31,25 @@ module.exports = function(io) {
                 }
             });
         });
+
+        socket.on("removed", function(data) {
+            var symbol = data;
+            getSymbolsFromDB(function(err, symbols) {
+                if (err) {
+                    console.error("socket.config.js", err);
+                } else {
+                    // if symbol is not in DB
+                    if (symbols.indexOf(symbol) < 0) {
+                        // do nothing
+                    } else {
+                        eraseFromDB(symbol, function(err) {
+                            if (err) throw err;
+                            io.sockets.emit("removed", data);
+                        });
+                    }
+                }
+            });
+        });
     });
 };
 
@@ -74,5 +93,28 @@ function writeToDB(symbol, callback) {
     fs.appendFile(file, symbol+"\n", function(err) {
         if (err) return callback(err);
         else return callback(null);
+    });
+}
+
+/*
+* erase from database, currently erase from a text file
+* @param {string} symbol to be deleted
+* @param {function} callback
+*   @callback-arg [Error} err
+*/
+function eraseFromDB(symbol, callback) {
+    var file = path.join(process.cwd(), "app", "data", "symbols.txt");
+
+    fs.readFile(file, "utf8", function (err, data) {
+        if (err) return callback(err);
+        // find where is the symbol in the file and slice it
+        var position = data.indexOf(symbol);
+        var newData = data.slice(0, position)
+                    + data.slice(position + symbol.length + 1); // +1 slice for the newline character 
+
+        fs.writeFile(file, newData, "utf8", function (err) {
+            if (err) return callback(err);
+            callback(null);
+        });
     });
 }

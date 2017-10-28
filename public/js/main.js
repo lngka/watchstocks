@@ -47,7 +47,7 @@ $(function() {
         if (HighstockController.isAlreadyThere(symbol)) {
             //do nothing
         } else {
-            myChart.showLoading("Server updates...");
+            myChart.showLoading("Someone adds..." + symbol);
             StockDataController.getBySymbol(symbol, function(err, data){
                 if (err) {
                     myChart.hideLoading();
@@ -60,6 +60,28 @@ $(function() {
                     }
                     myChart.hideLoading();
                 });
+            });
+        }
+    });
+
+    socket.on("removed", function(data) {
+        var symbol = data;
+        if (!HighstockController.isAlreadyThere(symbol)) {
+            //do nothing
+        } else {
+            myChart.showLoading("Someone removes..." + symbol);
+            HighstockController.removeFromSeries(symbol, function(err) {
+                if (err) throw err;
+
+                var legends = document.querySelector("#legends");
+
+                // each legend has unique delete-button
+                // so we search the legend-item to be removed by its button's name
+                var deleteBtn  = legends.querySelector("div.legend-item button[name="+symbol+"]");
+                legends.removeChild(deleteBtn.parentElement);
+
+                // show chart again after 0.8 second
+                setInterval(function(){ myChart.hideLoading(); }, 800);
             });
         }
     });

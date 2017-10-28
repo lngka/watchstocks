@@ -152,6 +152,11 @@ function initLegendDeleteButton (legends, legend, button) {
                 return alert("HighstockController " + err.message);
             } else {
                 legends.removeChild(legend);
+
+                // inform server of successful change
+                //eslint-disable-next-line no-undef
+                var socket = SocketController.getSocket(window.location.origin);
+                socket.emit("removed", symbol);
             }
         });
     });
