@@ -27,6 +27,11 @@ HighstockController.init = function(id) {
         "subtitle": {
             "text": "Invest only what you can lose"
         },
+        "plotOptions": {
+            "series": {
+                "turboThreshold": 2000,
+            }
+        },
         "series": []
     });
     HighstockController.myChart = myChart;

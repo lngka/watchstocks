@@ -56,14 +56,10 @@ StockDataController.processData = function(rawData, callback) {
         var date = new Date(key);
         var dataPoint = {
             "x": date.getTime(),
-            "open" : Number(timeSeries[key]["1. open"]),
-            "high" : Number(timeSeries[key]["2. high"]),
-            "low"  : Number(timeSeries[key]["3. low"]),
-            "close": Number(timeSeries[key]["4. close"]),
         };
 
         // add an "y" value for dataPoint, used to draw line charts
-        dataPoint.y = (dataPoint.open + dataPoint.close) / 2;
+        dataPoint.y = (Number(timeSeries[key]["1. open"]) + Number(timeSeries[key]["4. close"]) / 2);
 
         // round to 2 decimal places with 1E2 means 100, 1E3 means 1000
         // change to 1E3 if we need 3 decimal places
