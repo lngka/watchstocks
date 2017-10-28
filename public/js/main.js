@@ -16,9 +16,6 @@ $(function() {
                 if (err) return alert(err.message);
                 HighstockController.addToSeries(data, function(err) {
                     if (err) return alert(err.message);
-                    HighstockController.addLegendItem(symbol, function(err) {
-                        if (err) return alert(err.message);
-                    });
                 });
             });
         });

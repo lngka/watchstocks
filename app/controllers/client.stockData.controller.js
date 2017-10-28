@@ -26,6 +26,8 @@ StockDataController.getBySymbol = function(symbol, callback) {
 
 /*
 * function to process data that Highcharts understands
+* @param {string} rawData should be a JSON string returned from a GET to server
+* @param {function} callback
 */
 StockDataController.processData = function(rawData, callback) {
     try {
@@ -36,8 +38,8 @@ StockDataController.processData = function(rawData, callback) {
     }
 
     var timeSeries = rawData["Time Series (Daily)"];
-    var result = [];
 
+    var result = [];
     for (var key in timeSeries) {
         var date = new Date(key);
         var dataPoint = {

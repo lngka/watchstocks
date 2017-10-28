@@ -24,15 +24,6 @@ $(document).ready(function() {
                 HighstockController.addToSeries(data, function(err) {
                     if (err) {
                         return alert(err.message);
-                    } else {
-                        // make a legend-item
-                        HighstockController.addLegendItem(symbol, function(err) {
-                            if (err) {
-                                return alert(err.message);
-                            } else {
-                                // TODO:inform server about new symbol
-                            }
-                        });
                     }
                 });
             }
