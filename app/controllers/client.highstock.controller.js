@@ -131,7 +131,7 @@ HighstockController.addLegendItem = function(symbol, callback) {
 function styleLegendItem (legend){
 
     var color = whichColor();
-    legend.style["border-left"] = "thick outset " + color;
+    legend.style["border-left"] = "thick solid " + color;
 }
 
 /*

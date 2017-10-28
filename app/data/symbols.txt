@@ -1,2 +1,3 @@
-GE
 FB
+MSFT
+AAPL
