@@ -1,9 +1,10 @@
 body {
     padding-top: 5vh;
+    background-color: #D5D8DC;
 }
 
 #symbol-control-area {
-    background-color: #E8EAF6;
+    background-color: #D5D8DC;
 }
 
 #chart-area {

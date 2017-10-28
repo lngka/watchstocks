@@ -212,11 +212,8 @@ function whichColor() {
         return console.error(err);
     }
 
-    const pallet =  [
-        "#2f7ed8", "#0d233a", "#8bbc21", "#910000",
-        "#1aadce", "#492970", "#f28f43", "#77a1e5",
-        "#c42525", "#a6c96a"
-    ];
+    const pallet =  ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066",
+        "#eeaaee", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"];
 
     /*
     * count the total number of current legend-item(s)
