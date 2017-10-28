@@ -227,5 +227,7 @@ function whichColor() {
     */
     var count = document.querySelector("#legends").childElementCount - 1;
 
-    return pallet[count];
+
+    // if used all colors, start from the first one again
+    return pallet[count%pallet.length];
 }
