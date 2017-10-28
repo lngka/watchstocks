@@ -21,6 +21,10 @@ body {
     display: inline-block;
 }
 
+#sample-legend-item {
+    display: none;
+}
+
 .legend-item {
     background-color: white;
     width: 98%;

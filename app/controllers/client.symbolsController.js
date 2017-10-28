@@ -17,14 +17,18 @@ $(document).ready(function() {
             return alert("Symbols must be longer as 1 character");
         }
 
+        HighstockController.myChart.showLoading("Getting new data...");
         StockDataController.getBySymbol(symbol, function(err, data){
             if (err) {
+                HighstockController.myChart.hideLoading();
                 return alert(err.message);
             } else {
                 HighstockController.addToSeries(data, function(err) {
                     if (err) {
+                        HighstockController.myChart.hideLoading();
                         return alert(err.message);
                     }
+                    HighstockController.myChart.hideLoading();
                 });
             }
         });

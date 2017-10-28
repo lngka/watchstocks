@@ -2,7 +2,8 @@
 /*eslint-disable no-undef*/
 $(function() {
     // init the chart //client.highstock.controller.js
-    HighstockController.init(document.querySelector("#chart-area").id);
+    var myChart = HighstockController.init(document.querySelector("#chart-area").id);
+    myChart.showLoading("Getting portfolio...");
 
     // init socketio connection //client.socket.controller.js
     const socket = SocketController.getSocket(window.location.origin);
@@ -11,11 +12,33 @@ $(function() {
     socket.on("symbols", function(data) {
         var symbols = data.symbols;
 
+        if (!symbols.length) {
+            HighstockController.myChart.showLoading("Hint: add some stocks to watch");
+        }
+
+        var symbols_total = symbols.length;
+        var processed_symbols_count = 0;
         symbols.forEach(function(symbol) {
             StockDataController.getBySymbol(symbol, function(err, data){
-                if (err) return alert(err.message);
+                if (err) {
+                    processed_symbols_count++;
+                    if (processed_symbols_count == symbols_total) {
+                        myChart.hideLoading();
+                    }
+                    return alert(err.message);
+                }
                 HighstockController.addToSeries(data, function(err) {
-                    if (err) return alert(err.message);
+                    if (err){
+                        processed_symbols_count++;
+                        if (processed_symbols_count == symbols_total) {
+                            myChart.hideLoading();
+                        }
+                        return alert(err.message);
+                    }
+                    processed_symbols_count++;
+                    if (processed_symbols_count == symbols_total) {
+                        myChart.hideLoading();
+                    }
                 });
             });
         });
