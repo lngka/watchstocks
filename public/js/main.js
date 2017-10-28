@@ -37,10 +37,30 @@ $(function() {
                     }
                     processed_symbols_count++;
                     myChart.hideLoading(); // chart has at least 1 series loaded
-                    var socket = SocketController.getSocket(window.location.origin);
-                    socket.emit("added", symbol);
                 });
             });
         });
+    });
+
+    socket.on("added", function(data) {
+        var symbol = data;
+        if (HighstockController.isAlreadyThere(symbol)) {
+            //do nothing
+        } else {
+            myChart.showLoading("Server updates...");
+            StockDataController.getBySymbol(symbol, function(err, data){
+                if (err) {
+                    myChart.hideLoading();
+                    return alert(err.message);
+                }
+                HighstockController.addToSeries(data, function(err) {
+                    if (err){
+                        myChart.hideLoading();
+                        return alert(err.message);
+                    }
+                    myChart.hideLoading();
+                });
+            });
+        }
     });
 });

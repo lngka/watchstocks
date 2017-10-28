@@ -61,7 +61,7 @@ HighstockController.addToSeries = function(input, callback) {
         return callback(err2);
     }
 
-    if (isAlreadyThere(input.symbol)) {
+    if (HighstockController.isAlreadyThere(input.symbol)) {
         var err3 = new Error("This symbol is already there");
         return callback(err3);
     }
@@ -79,14 +79,14 @@ HighstockController.addToSeries = function(input, callback) {
     return callback(null);
 };
 // true if symbol is already displayed, return false if not
-function isAlreadyThere(symbol) {
+HighstockController.isAlreadyThere = function (symbol) {
     var series = HighstockController.myChart.get(symbol);
     if (!series) {
         return false;
     } else {
         return true;
     }
-}
+};
 
 /*
 * get symbol color from chart and render a legend-item under #legends
