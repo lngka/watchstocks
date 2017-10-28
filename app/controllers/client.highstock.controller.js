@@ -66,21 +66,6 @@ HighstockController.addToSeries = function(input, callback) {
         return callback(err3);
     }
 
-    // NOTE: not used anymore,  left for documentation purpose
-    // /* figure out which index the being-added series is,
-    // *  by counting how many series already there
-    // *  NOTE: Highcharts adds a series named "Navigator" by default
-    // *  when series has AT LEAST one element
-    // *  So the count must be reduced by 1, if needed, to get what we want
-    // */
-    // // btw, the index of each series determines its color
-    // var whichseries = HighstockController.myChart.series.length;
-    // var colorIndex = whichseries;
-    // if (whichseries >= 2) {
-    //     colorIndex = whichseries - 1;
-    // }
-    // var color = HighstockController.myColors[colorIndex];
-
     // build new series
     var series = {
         "id": input.symbol,// https://api.highcharts.com/class-reference/Highcharts.Chart#get
@@ -205,6 +190,7 @@ HighstockController.removeFromSeries = function(id, callback) {
 * define the next color for styling legend-item and series on chart
 * @return {string} color hex code
 */
+var color_counter = 0;
 function whichColor() {
     // sanity checks
     if (!HighstockController.myChart) {
@@ -216,15 +202,19 @@ function whichColor() {
         "#eeaaee", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"];
 
     /*
-    * count the total number of current legend-item(s)
-    * minus 1 for the predefined and hidden sample-legend-item
-    * to determine which color to use
-    * NOTE: shouldn't count series cuz Highcharts add 1 series
-    * named "Navigator" to the actual number of series
+    * return the first color, until color_counter is increased by 2
+    * then return the next color, and so on.
+    * because a color is asked for 2 times, for legend-item & series color
+
+    * finally, wrap color_counter around the doubled value of
+    * pallet.length (number of colors available)
     */
-    var count = document.querySelector("#legends").childElementCount - 1;
+
+    var colorID = Math.floor(color_counter / 2);
+    color_counter++;
+    color_counter %= pallet.length * 2;
 
 
     // if used all colors, start from the first one again
-    return pallet[count%pallet.length];
+    return pallet[colorID];
 }
