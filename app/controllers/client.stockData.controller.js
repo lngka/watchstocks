@@ -30,15 +30,27 @@ StockDataController.getBySymbol = function(symbol, callback) {
 * @param {function} callback
 */
 StockDataController.processData = function(rawData, callback) {
+    // check data input
     try {
         rawData = JSON.parse(rawData);
     } catch (e) {
-        var formatErr = new Error("StockDataController: Wrong data format from server");
-        return callback(formatErr, null);
+        var err1 = new Error("Wrong data format from server");
+        return callback(err1, null);
     }
 
+    // check data input deeper
     var timeSeries = rawData["Time Series (Daily)"];
+    if (!timeSeries) {
+        if (rawData["Error Message"]) {
+            var err2 = new Error("Error from API, possibly invalid stock name");
+            return callback(err2, null);
+        } else {
+            var err3 = new Error("processData error");
+            return callback(err3, null);
+        }
+    }
 
+    // input checks passed
     var result = [];
     for (var key in timeSeries) {
         var date = new Date(key);
@@ -61,10 +73,20 @@ StockDataController.processData = function(rawData, callback) {
         result.unshift(dataPoint);
     }
 
-    // processed data must be in this format
-    var processed = {
-        "symbol": rawData["Meta Data"]["2. Symbol"],
-        "data": result
-    };
+    if (!result.length) {
+        var err5 = new Error("No data found for symbol");
+        return callback(err5, null);
+    }
+
+    try {
+        var processed = {
+            "symbol": rawData["Meta Data"]["2. Symbol"],
+            "data": result
+        };
+    } catch (e) {
+        return callback(e, null);
+    }
+
+    // all checks passed
     return callback(null, processed);
 };

@@ -15,7 +15,7 @@ $(function() {
         if (!symbols.length) {
             HighstockController.myChart.showLoading("Hint: add some stocks to watch");
         }
-
+        // the counting is needed to display loading message properly
         var symbols_total = symbols.length;
         var processed_symbols_count = 0;
         symbols.forEach(function(symbol) {
@@ -36,9 +36,7 @@ $(function() {
                         return alert(err.message);
                     }
                     processed_symbols_count++;
-                    if (processed_symbols_count == symbols_total) {
-                        myChart.hideLoading();
-                    }
+                    myChart.hideLoading(); // chart has at least 1 series loaded
                 });
             });
         });
