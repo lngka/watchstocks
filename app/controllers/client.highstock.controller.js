@@ -46,21 +46,24 @@ function onAddSeries(event) {
 * add a series to the chart
 * @param {object} input : {"symbol": symbol, "data": [{}]}
 *      input.data is an array of objects with keys: x, open, high, low, close, y
-*      x is a timestamp
+*      x is a timestamp, y is the average between open and close
 * @param {function} callback with;
 *   @callback-arg {Error} err if something is wrong
 */
 HighstockController.addToSeries = function(input, callback) {
-
     // sanity checks
     if (!HighstockController.myChart) {
         var err1 = new Error("Couldn't add series if chart not initialized");
         return callback(err1);
     }
-
     if (!input.symbol || !input.data) {
         var err2 = new Error("Couldn't add series if wrong data input");
         return callback(err2);
+    }
+
+    if (isAlreadyThere(input.symbol)) {
+        var err3 = new Error("This symbol is already there");
+        return callback(err3);
     }
 
     // NOTE: not used anymore,  left for documentation purpose
@@ -90,6 +93,16 @@ HighstockController.addToSeries = function(input, callback) {
     HighstockController.myChart.addSeries(series, true, true);
     return callback(null);
 };
+// true if symbol is already displayed, return false if not
+function isAlreadyThere(symbol) {
+    var series = HighstockController.myChart.get(symbol);
+    if (!series) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 /*
 * get symbol color from chart and render a legend-item under #legends
 * @param {string} symbol of the stock being added
