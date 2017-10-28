@@ -28,7 +28,10 @@ $(document).ready(function() {
                         HighstockController.myChart.hideLoading();
                         return alert(err.message);
                     }
+                    // if everything went well..
                     HighstockController.myChart.hideLoading();
+                    var socket = SocketController.getSocket(window.location.origin);
+                    socket.emit("added", symbol);
                 });
             }
         });

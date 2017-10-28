@@ -21,5 +21,9 @@ module.exports = function(io) {
             socket.emit("symbols", {"symbols": symbols});
         });
 
+        socket.on("added", function(data) {
+            var symbol = data;
+            console.log(symbol);
+        });
     });
 };

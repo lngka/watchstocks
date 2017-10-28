@@ -37,6 +37,8 @@ $(function() {
                     }
                     processed_symbols_count++;
                     myChart.hideLoading(); // chart has at least 1 series loaded
+                    var socket = SocketController.getSocket(window.location.origin);
+                    socket.emit("added", symbol);
                 });
             });
         });
